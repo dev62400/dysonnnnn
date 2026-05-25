@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dyson Purifier Cool™ PC2 De-NOx — Blanc & Or</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0c0a;
+  --bg2: #131210;
+  --fg: #f4efe6;
+  --fg-dim: #8a8378;
+  --fg-mute: #3a3530;
+  --gold: #c8956d;
+  --gold-dim: #8a6440;
+  --line: rgba(244,239,230,0.08);
+  --panel-w: 440px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--fg);font-family:'Geist',system-ui,sans-serif;font-weight:300;line-height:1.5;overflow-x:hidden;}
+
+/* GRAIN */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:200;opacity:0.045;mix-blend-mode:overlay;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+.atm{position:fixed;inset:0;pointer-events:none;z-index:0;
+background:radial-gradient(ellipse 65% 55% at 68% 28%,rgba(200,149,109,.10),transparent 65%),
+           radial-gradient(ellipse 45% 40% at 18% 80%,rgba(200,149,109,.04),transparent 70%);}
+
+.shell{position:relative;z-index:1;}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 40px;border-bottom:1px solid var(--line);
+position:sticky;top:0;background:rgba(13,12,10,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:100;}
+.logo{font-family:'Instrument Serif',serif;font-size:28px;letter-spacing:-0.02em;}
+.logo em{font-style:italic;color:var(--gold);}
+.nav-r{display:flex;gap:28px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--fg-dim);}
+.nav-r a{color:inherit;text-decoration:none;transition:color .3s;}
+.nav-r a:hover{color:var(--fg);}
+.cart-btn{border:1px solid var(--line);border-radius:100px;padding:8px 18px;color:var(--fg);cursor:pointer;background:transparent;
+font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;transition:border-color .3s,background .3s;}
+.cart-btn:hover{border-color:var(--gold);background:rgba(200,149,109,.06);}
+
+/* HERO */
+.hero{min-height:calc(100vh - 73px);padding:80px 40px 60px;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+margin-bottom:32px;display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .8s .1s ease forwards;}
+.eyebrow::before{content:'';width:36px;height:1px;background:var(--gold);}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(60px,8.5vw,140px);line-height:.93;font-weight:400;letter-spacing:-.035em;margin-bottom:36px;
+opacity:0;animation:fadeUp 1s .25s ease forwards;}
+h1 em{font-style:italic;color:var(--gold);}
+.lede{font-size:17px;color:var(--fg-dim);max-width:460px;margin-bottom:32px;line-height:1.65;opacity:0;animation:fadeUp 1s .4s ease forwards;}
+
+/* BADGES */
+.badges{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:40px;opacity:0;animation:fadeUp 1s .5s ease forwards;}
+.badge{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:100px;padding:8px 14px;
+font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--fg-dim);}
+.badge svg{color:var(--gold);}
+
+.hero-actions{display:flex;gap:20px;align-items:center;opacity:0;animation:fadeUp 1s .55s ease forwards;}
+.btn{font-family:'Geist',sans-serif;font-size:14px;letter-spacing:.01em;border:none;cursor:pointer;padding:17px 30px;
+border-radius:100px;transition:all .3s cubic-bezier(.2,.8,.2,1);display:inline-flex;align-items:center;gap:10px;font-weight:500;text-decoration:none;}
+.btn-primary{background:var(--fg);color:var(--bg);}
+.btn-primary:hover{background:var(--gold);transform:translateY(-2px);box-shadow:0 24px 48px -12px rgba(200,149,109,.4);}
+.btn-primary:active{transform:translateY(0);}
+.price{font-family:'Instrument Serif',serif;font-size:28px;font-style:italic;}
+
+/* FAN STAGE */
+.fan-stage{position:relative;width:100%;height:700px;perspective:1800px;cursor:grab;user-select:none;-webkit-user-select:none;
+display:flex;align-items:center;justify-content:center;opacity:0;animation:fadeUp 1.2s .3s ease forwards;}
+.fan-stage:active{cursor:grabbing;}
+.fan-3d{width:100%;height:100%;transform-style:preserve-3d;display:flex;align-items:center;justify-content:center;will-change:transform;}
+.fan-svg{width:auto;height:90%;max-height:640px;filter:drop-shadow(0 60px 80px rgba(0,0,0,.75));pointer-events:none;}
+.fan-pulse{position:absolute;width:200px;height:500px;border-radius:50%;
+background:radial-gradient(ellipse,rgba(200,149,109,.15),transparent 70%);
+top:50%;left:50%;transform:translate(-50%,-52%);pointer-events:none;animation:pulse 4s ease-in-out infinite;z-index:-1;}
+@keyframes pulse{0%,100%{opacity:.4;transform:translate(-50%,-52%) scale(1);}50%{opacity:.75;transform:translate(-50%,-52%) scale(1.06);}}
+.fan-hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-mute);
+display:flex;align-items:center;gap:10px;white-space:nowrap;}
+.fan-hint .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 1.6s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 8px var(--gold);}50%{opacity:.2;box-shadow:none;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* SPECS */
+.specs{border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);}
+.spec{padding:44px 32px;border-right:1px solid var(--line);transition:background .3s;}
+.spec:last-child{border-right:none;}
+.spec:hover{background:rgba(200,149,109,.03);}
+.spec-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:16px;}
+.spec-value{font-family:'Instrument Serif',serif;font-size:44px;letter-spacing:-.02em;line-height:1;}
+.spec-value sup{font-size:13px;color:var(--gold);font-style:italic;vertical-align:top;margin-left:4px;font-family:'JetBrains Mono',monospace;font-weight:400;}
+
+/* FEATURES */
+.features{padding:140px 40px 120px;display:grid;grid-template-columns:1fr 1fr;gap:80px;position:relative;}
+.features::before{content:'— FONCTIONS';position:absolute;top:56px;left:40px;
+font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--fg-mute);}
+.features-intro{position:sticky;top:140px;align-self:start;padding-top:32px;}
+.features-intro h2{font-family:'Instrument Serif',serif;font-size:clamp(42px,5vw,76px);line-height:.95;letter-spacing:-.03em;font-weight:400;margin-bottom:28px;}
+.features-intro h2 em{font-style:italic;color:var(--gold);}
+.features-intro p{color:var(--fg-dim);max-width:380px;font-size:16px;}
+.feature{border-top:1px solid var(--line);padding:40px 0;display:grid;grid-template-columns:60px 1fr;gap:24px;
+transition:all .4s cubic-bezier(.2,.8,.2,1);}
+.feature:last-child{border-bottom:1px solid var(--line);}
+.feature:hover{padding-left:14px;}
+.feature:hover .fn{color:var(--fg);}
+.feature:hover h3{color:var(--gold);}
+.fn{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--gold);padding-top:8px;transition:color .3s;}
+.feature h3{font-family:'Instrument Serif',serif;font-size:30px;font-weight:400;margin-bottom:10px;letter-spacing:-.015em;transition:color .3s;}
+.feature p{color:var(--fg-dim);font-size:15px;line-height:1.65;max-width:480px;}
+
+/* FOOTER */
+footer{padding:80px 40px 60px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:40px;}
+footer .logo{font-size:clamp(60px,9vw,112px);line-height:.9;}
+footer .meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-dim);line-height:2.2;text-align:right;}
+
+/* ═══════════════════════════════════════════
+   CART PANEL
+══════════════════════════════════════════ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;opacity:0;pointer-events:none;transition:opacity .4s;}
+.overlay.open{opacity:1;pointer-events:all;}
+
+.cart-panel{position:fixed;top:0;right:0;width:var(--panel-w);max-width:100vw;height:100%;
+background:#131210;z-index:400;transform:translateX(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);
+display:flex;flex-direction:column;border-left:1px solid var(--line);}
+.cart-panel.open{transform:translateX(0);}
+
+.panel-head{display:flex;justify-content:space-between;align-items:center;padding:28px 28px 22px;border-bottom:1px solid var(--line);}
+.panel-head h3{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400;}
+.close-btn{background:none;border:1px solid var(--line);color:var(--fg);width:36px;height:36px;border-radius:50%;cursor:pointer;
+display:flex;align-items:center;justify-content:center;font-size:16px;transition:border-color .3s;}
+.close-btn:hover{border-color:var(--fg);}
+
+.panel-body{flex:1;overflow-y:auto;padding:24px 28px;}
+
+/* Cart item */
+.cart-item{display:flex;gap:18px;align-items:flex-start;padding:20px 0;border-bottom:1px solid var(--line);}
+.cart-thumb{width:70px;height:100px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+border:1px solid var(--line);border-radius:8px;background:#0d0c0a;}
+.cart-info{flex:1;}
+.cart-info .cart-name{font-family:'Instrument Serif',serif;font-size:18px;font-weight:400;margin-bottom:4px;}
+.cart-info .cart-ref{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.qty-row{display:flex;align-items:center;gap:16px;}
+.qty-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;
+font-size:16px;display:flex;align-items:center;justify-content:center;transition:border-color .3s;}
+.qty-btn:hover{border-color:var(--gold);}
+.qty-val{font-family:'JetBrains Mono',monospace;font-size:14px;min-width:20px;text-align:center;}
+.cart-price{font-family:'Instrument Serif',serif;font-size:22px;font-style:italic;}
+
+/* Summary */
+.cart-summary{padding:20px 0;}
+.summary-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;
+font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--fg-dim);}
+.summary-row.total{color:var(--fg);font-size:13px;border-top:1px solid var(--line);padding-top:16px;margin-top:6px;}
+.summary-row.total .sum-val{font-family:'Instrument Serif',serif;font-size:24px;font-style:italic;letter-spacing:0;}
+
+/* Panel footer */
+.panel-foot{padding:20px 28px 28px;border-top:1px solid var(--line);}
+.panel-foot .btn{width:100%;justify-content:center;font-size:15px;padding:18px;}
+
+/* Empty cart */
+.empty-cart{text-align:center;padding:60px 0;color:var(--fg-dim);}
+.empty-cart svg{margin-bottom:16px;opacity:.3;}
+.empty-cart p{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;}
+
+/* ═══════════════════════════════════════════
+   CHECKOUT PANEL (slides inside cart panel)
+══════════════════════════════════════════ */
+.checkout-layer{position:absolute;inset:0;background:#131210;z-index:10;
+transform:translateX(100%);transition:transform .4s cubic-bezier(.2,.8,.2,1);}
+.checkout-layer.open{transform:translateX(0);}
+
+.co-head{display:flex;align-items:center;gap:14px;padding:28px 28px 22px;border-bottom:1px solid var(--line);}
+.back-btn{background:none;border:1px solid var(--line);color:var(--fg);width:36px;height:36px;border-radius:50%;cursor:pointer;
+display:flex;align-items:center;justify-content:center;font-size:16px;transition:border-color .3s;flex-shrink:0;}
+.back-btn:hover{border-color:var(--fg);}
+.co-head h3{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400;}
+
+.co-body{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:0;height:calc(100% - 160px);}
+
+/* Steps */
+.steps{display:flex;gap:0;margin-bottom:28px;}
+.step{flex:1;text-align:center;position:relative;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--fg-mute);}
+.step::before{content:attr(data-n);display:block;width:28px;height:28px;border-radius:50%;border:1px solid var(--fg-mute);
+margin:0 auto 8px;line-height:28px;text-align:center;font-size:11px;transition:all .3s;}
+.step.active{color:var(--gold);}
+.step.active::before{border-color:var(--gold);background:rgba(200,149,109,.12);color:var(--gold);}
+.step.done::before{background:var(--gold);border-color:var(--gold);color:var(--bg);content:'✓';}
+.step.done{color:var(--gold-dim);}
+.step-line{flex:0 0 1px;align-self:center;height:1px;flex:1;background:var(--line);margin-bottom:28px;transform:translateY(-14px);}
+
+/* Form */
+.form-page{display:none;flex-direction:column;gap:18px;}
+.form-page.active{display:flex;}
+
+.field-group{display:flex;flex-direction:column;gap:6px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--fg-dim);}
+input,select{background:#0d0c0a;border:1px solid var(--line);color:var(--fg);padding:13px 16px;border-radius:8px;font-family:'Geist',sans-serif;
+font-size:14px;font-weight:300;outline:none;transition:border-color .3s;width:100%;}
+input:focus,select:focus{border-color:var(--gold);}
+select option{background:#0d0c0a;}
+input::placeholder{color:var(--fg-mute);}
+
+/* Card field styled */
+.card-row{position:relative;}
+.card-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);
+font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.1em;}
+
+/* Order recap */
+.co-recap{background:#0d0c0a;border:1px solid var(--line);border-radius:10px;padding:18px;}
+.recap-row{display:flex;justify-content:space-between;padding:6px 0;
+font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--fg-dim);}
+.recap-row.total{color:var(--fg);border-top:1px solid var(--line);margin-top:8px;padding-top:12px;}
+.recap-row.total span:last-child{font-family:'Instrument Serif',serif;font-size:20px;font-style:italic;letter-spacing:0;}
+.section-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+
+.co-foot{padding:16px 28px 24px;border-top:1px solid var(--line);}
+.co-foot .btn{width:100%;justify-content:center;font-size:15px;padding:18px;}
+.co-foot-note{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+color:var(--fg-mute);text-align:center;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px;}
+
+/* Confirmation */
+.confirm-page{text-align:center;padding:40px 0;display:none;flex-direction:column;align-items:center;gap:20px;}
+.confirm-page.active{display:flex;}
+.confirm-icon{width:72px;height:72px;border-radius:50%;background:rgba(200,149,109,.12);border:1px solid var(--gold);
+display:flex;align-items:center;justify-content:center;font-size:28px;}
+.confirm-page h4{font-family:'Instrument Serif',serif;font-size:32px;font-weight:400;}
+.confirm-page h4 em{font-style:italic;color:var(--gold);}
+.confirm-page p{color:var(--fg-dim);font-size:15px;max-width:280px;line-height:1.6;}
+.confirm-ref{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.15em;color:var(--gold);margin-top:4px;}
+
+/* Sticky mobile CTA */
+.sticky-cta{display:none;}
+@media(max-width:900px){
+  nav{padding:18px 20px;}
+  .nav-r a.hide-m{display:none;}
+  .hero{grid-template-columns:1fr;padding:32px 20px 40px;gap:20px;}
+  .fan-stage{height:480px;order:-1;}
+  .specs{grid-template-columns:repeat(2,1fr);}
+  .spec{padding:28px 20px;border-bottom:1px solid var(--line);}
+  .spec:nth-child(2){border-right:none;}
+  .spec:nth-last-child(-n+2){border-bottom:none;}
+  .features{grid-template-columns:1fr;padding:80px 20px;gap:40px;}
+  .features::before{left:20px;top:32px;}
+  .features-intro{position:static;padding-top:16px;}
+  footer{padding:60px 20px 120px;flex-direction:column;align-items:flex-start;}
+  footer .meta{text-align:left;}
+  .hero-actions{flex-wrap:wrap;}
+  .badges{gap:10px;}
+  .sticky-cta{display:flex;position:fixed;bottom:0;left:0;right:0;
+    background:rgba(13,12,10,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    padding:14px 20px;border-top:1px solid var(--line);z-index:60;justify-content:space-between;align-items:center;gap:14px;}
+  .sticky-cta .ps{display:flex;flex-direction:column;line-height:1.1;}
+  .sticky-cta .ps span:first-child{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:3px;}
+  .sticky-cta .ps span:last-child{font-family:'Instrument Serif',serif;font-size:22px;font-style:italic;}
+  .sticky-cta .btn{flex:1;justify-content:center;padding:13px 18px;}
+  :root{--panel-w:100vw;}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:4px;}
+</style>
+</head>
+<body>
+<div class="atm"></div>
+<div class="shell">
+
+<!-- NAV -->
+<nav>
+  <div class="logo">dyson<em>.</em></div>
+  <div class="nav-r">
+    <a href="#" class="hide-m">Découvrir</a>
+    <a href="#" class="hide-m">Comparer</a>
+    <a href="#" class="hide-m">Assistance</a>
+    <button class="cart-btn" id="cartBtn" onclick="openCart()" aria-label="Ouvrir le panier">Panier · <span id="cartCount">0</span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="eyebrow">Purifier Cool™ PC2 De-NOx — TP12</div>
+    <h1>L'air,<br><em>réinventé.</em></h1>
+    <p class="lede">Capture le NO₂, détruit le formaldéhyde, filtre 99,95 % des particules. Le purificateur ventilateur le plus avancé de Dyson.</p>
+    <div class="badges">
+      <div class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M4 5l3-3 3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M4.5 13c0-1.4.5-2.5 2.5-4 2 1.5 2.5 2.6 2.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Capteur temp.
+      </div>
+      <div class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 13c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Détection présence
+      </div>
+      <div class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 5.5C3 3 4.9 2 7 2s4 1 6 3.5M3.5 7.5C5 6 5.9 5.5 7 5.5s2 .5 3.5 2M5.5 9.5C6 9 6.4 8.8 7 8.8s1 .2 1.5.7M7 12v.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Wi-Fi &amp; app
+      </div>
+    </div>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="addToCart()">
+        Ajouter au panier
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <span class="price">200 €</span>
+    </div>
+  </div>
+
+  <!-- FAN (Dyson tower fan shape: tall narrow rounded-rect loop + gold mesh base) -->
+  <div class="fan-stage" id="fanStage" role="img" aria-label="Modèle interactif du Dyson Purifier Cool PC2 De-NOx Blanc & Or. Glissez pour faire pivoter.">
+    <div class="fan-pulse"></div>
+    <div class="fan-3d" id="fan3d">
+      <svg class="fan-svg" viewBox="0 0 300 780" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- White loop gradient -->
+          <linearGradient id="loopSide" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#b0aaa0"/>
+            <stop offset="30%" stop-color="#e8e4de"/>
+            <stop offset="50%" stop-color="#f8f5f0"/>
+            <stop offset="70%" stop-color="#dedad4"/>
+            <stop offset="100%" stop-color="#909088"/>
+          </linearGradient>
+          <linearGradient id="loopTop" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#c8c4bc"/>
+            <stop offset="50%" stop-color="#f0ede8"/>
+            <stop offset="100%" stop-color="#b8b4ac"/>
+          </linearGradient>
+          <linearGradient id="loopInner" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#5a5850"/>
+            <stop offset="50%" stop-color="#e0dcd4"/>
+            <stop offset="100%" stop-color="#5a5850"/>
+          </linearGradient>
+          <!-- Gold base gradient -->
+          <linearGradient id="goldBase" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#4a3520"/>
+            <stop offset="20%" stop-color="#c8956d"/>
+            <stop offset="50%" stop-color="#e8b888"/>
+            <stop offset="80%" stop-color="#c0855d"/>
+            <stop offset="100%" stop-color="#4a3520"/>
+          </linearGradient>
+          <linearGradient id="goldBaseV" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(255,220,180,0.3)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0.2)"/>
+          </linearGradient>
+          <!-- Neck gradient (connecting loop to base) -->
+          <linearGradient id="neckG" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1a1815"/>
+            <stop offset="40%" stop-color="#6a6560"/>
+            <stop offset="60%" stop-color="#8a857c"/>
+            <stop offset="100%" stop-color="#1a1815"/>
+          </linearGradient>
+          <!-- LCD -->
+          <radialGradient id="lcdBg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1a2a3a"/>
+            <stop offset="100%" stop-color="#0a0c10"/>
+          </radialGradient>
+          <!-- Mesh pattern for gold base -->
+          <pattern id="mesh" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+            <circle cx="2.5" cy="2.5" r="1.2" fill="rgba(0,0,0,0.4)"/>
+          </pattern>
+          <!-- Soft glow under the fan -->
+          <radialGradient id="glowR" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(200,149,109,0.2)"/>
+            <stop offset="100%" stop-color="rgba(200,149,109,0)"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Atmospheric glow -->
+        <ellipse cx="150" cy="350" rx="120" ry="380" fill="url(#glowR)" opacity="0.6"/>
+
+        <!-- ── BLADELESS LOOP (tall narrow rounded-rect) ── -->
+        <!-- Outer shape: use path for a rounded rect approx 100w × 420h -->
+        <g id="loop">
+          <!-- Main loop body -->
+          <rect x="75" y="20" width="150" height="420" rx="75" fill="none" stroke="url(#loopSide)" stroke-width="34"/>
+          <!-- Inner highlight overlay -->
+          <rect x="75" y="20" width="150" height="420" rx="75" fill="none" stroke="url(#loopTop)" stroke-width="34" opacity="0.4"/>
+          <!-- Inner edge (air slit) -->
+          <rect x="92" y="37" width="116" height="386" rx="58" fill="none" stroke="#2a2820" stroke-width="2"/>
+          <!-- Outer edge subtle -->
+          <rect x="58" y="3" width="184" height="454" rx="92" fill="none" stroke="rgba(200,200,190,0.1)" stroke-width="1"/>
+          <!-- Top specular -->
+          <path d="M 85 72 Q 150 22 215 72" stroke="rgba(255,255,255,0.25)" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- Side airflow slot indicator -->
+          <line x1="59" y1="230" x2="59" y2="260" stroke="rgba(200,149,109,0.4)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="241" y1="230" x2="241" y2="260" stroke="rgba(200,149,109,0.4)" stroke-width="2" stroke-linecap="round"/>
+        </g>
+
+        <!-- ── NECK connecting loop to base ── -->
+        <g id="neck">
+          <rect x="114" y="438" width="72" height="30" fill="url(#neckG)" rx="2"/>
+          <rect x="114" y="438" width="72" height="30" fill="none" stroke="#1a1815" stroke-width="0.5" rx="2"/>
+        </g>
+
+        <!-- ── BASE (cylindrical gold mesh body) ── -->
+        <g id="base">
+          <!-- Base cylinder -->
+          <rect x="90" y="468" width="120" height="200" fill="url(#goldBase)" rx="6"/>
+          <!-- Mesh dots overlay -->
+          <rect x="90" y="468" width="120" height="200" fill="url(#mesh)" rx="6" opacity="0.9"/>
+          <!-- Vertical light sheen -->
+          <rect x="90" y="468" width="120" height="200" fill="url(#goldBaseV)" rx="6"/>
+          <!-- Top ring of base -->
+          <ellipse cx="150" cy="468" rx="60" ry="7" fill="#c8956d" opacity="0.6"/>
+          <ellipse cx="150" cy="468" rx="55" ry="5" fill="#e8b888" opacity="0.4"/>
+          <!-- Side highlight -->
+          <rect x="142" y="470" width="3" height="196" fill="rgba(255,220,180,0.25)" rx="2"/>
+
+          <!-- LCD display (center of base) -->
+          <rect x="128" y="500" width="44" height="52" fill="url(#lcdBg)" rx="4"/>
+          <rect x="128" y="500" width="44" height="52" fill="none" stroke="rgba(200,149,109,0.5)" stroke-width="0.7" rx="4"/>
+          <!-- LCD content -->
+          <text x="150" y="522" text-anchor="middle" fill="#4ab8e8" font-family="JetBrains Mono, monospace" font-size="13" font-weight="500">22°</text>
+          <line x1="136" y1="529" x2="164" y2="529" stroke="rgba(200,149,109,0.3)" stroke-width="0.5"/>
+          <text x="150" y="540" text-anchor="middle" fill="#8a6440" font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing="0.5">AUTO</text>
+          <!-- Air quality bar -->
+          <rect x="134" y="543" width="32" height="3" fill="rgba(200,149,109,0.15)" rx="1.5"/>
+          <rect x="134" y="543" width="22" height="3" fill="#5ab870" rx="1.5" opacity="0.8"/>
+
+          <!-- Power button ring -->
+          <circle cx="150" cy="555" r="4" fill="none" stroke="url(#goldBase)" stroke-width="1.5"/>
+          <circle cx="150" cy="555" r="1.5" fill="#c8956d">
+            <animate attributeName="opacity" values="1;0.3;1" dur="2.4s" repeatCount="indefinite"/>
+          </circle>
+
+          <!-- Bottom platform -->
+          <ellipse cx="150" cy="668" rx="60" ry="5" fill="#4a3520" opacity="0.8"/>
+          <rect x="92" y="665" width="116" height="22" fill="#2a2018" rx="4"/>
+          <ellipse cx="150" cy="665" rx="58" ry="4" fill="#c8956d" opacity="0.3"/>
+
+          <!-- Floor shadow -->
+          <ellipse cx="150" cy="700" rx="100" ry="8" fill="#000" opacity="0.5"/>
+        </g>
+      </svg>
+    </div>
+    <div class="fan-hint"><span class="dot"></span>Glissez pour faire pivoter</div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section class="specs">
+  <div class="spec"><div class="spec-label">Filtration</div><div class="spec-value">99,95<sup>%</sup></div></div>
+  <div class="spec"><div class="spec-label">Débit d'air</div><div class="spec-value">290<sup>L/s</sup></div></div>
+  <div class="spec"><div class="spec-label">NO₂ absorbé</div><div class="spec-value">+50<sup>%</sup></div></div>
+  <div class="spec"><div class="spec-label">Garantie</div><div class="spec-value">02<sup>ans</sup></div></div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="fonctions">
+  <div class="features-intro">
+    <h2>Une ingénierie<br><em>invisible.</em></h2>
+    <p>Quatre principes qui définissent l'expérience Dyson PC2. Tout ce que vous voyez sert un but. Tout ce que vous ne voyez pas aussi.</p>
+  </div>
+  <div class="feature-list">
+    <div class="feature"><div class="fn">01</div><div>
+      <h3>Filtre K-Carbon De-NOx</h3>
+      <p>Imprégné de carbonate de potassium, il capture 50 % de dioxyde d'azote en plus que les filtres charbon actif classiques.</p>
+    </div></div>
+    <div class="feature"><div class="fn">02</div><div>
+      <h3>Destruction du formaldéhyde</h3>
+      <p>Le filtre catalytique détruit le formaldéhyde en CO₂ et eau, de manière continue. Il n'a jamais besoin d'être remplacé.</p>
+    </div></div>
+    <div class="feature"><div class="fn">03</div><div>
+      <h3>Air Multiplier™ 360°</h3>
+      <p>Projette 290 L/s d'air purifié dans toute la pièce. L'oscillation 350° garantit une purification homogène, sans zones mortes.</p>
+    </div></div>
+    <div class="feature"><div class="fn">04</div><div>
+      <h3>Appli MyDyson™</h3>
+      <p>Contrôle complet depuis l'app : qualité de l'air en temps réel, programmation, compatibilité Alexa, Google Assistant et Siri.</p>
+    </div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">dyson<em>.</em></div>
+  <div class="meta">
+    Réf. TP12 — Purifier Cool™ PC2 De-NOx<br>
+    Blanc &amp; Or · Édition 2026<br>
+    Conçu à Malmesbury · Royaume-Uni<br>
+    © Dyson Ltd. Tous droits réservés
+  </div>
+</footer>
+</div>
+
+<!-- MOBILE STICKY CTA -->
+<div class="sticky-cta">
+  <div class="ps"><span>Purifier Cool PC2</span><span>200 €</span></div>
+  <button class="btn btn-primary" onclick="addToCart()">Ajouter au panier</button>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<!-- CART PANEL -->
+<div class="cart-panel" id="cartPanel" role="dialog" aria-label="Panier" aria-modal="true">
+  <div class="panel-head">
+    <h3>Mon panier</h3>
+    <button class="close-btn" onclick="closeCart()" aria-label="Fermer le panier">✕</button>
+  </div>
+  <div class="panel-body" id="cartBody">
+    <div class="empty-cart" id="emptyCart">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M6 8h4l5 18h14l4-12H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="18" cy="33" r="2" fill="currentColor"/><circle cx="28" cy="33" r="2" fill="currentColor"/></svg>
+      <p>Votre panier est vide</p>
+    </div>
+    <div id="cartContent" style="display:none">
+      <div class="cart-item">
+        <!-- Mini fan thumbnail -->
+        <div class="cart-thumb">
+          <svg viewBox="0 0 80 180" width="44" height="100">
+            <rect x="28" y="5" width="24" height="100" rx="12" fill="none" stroke="#e8e4de" stroke-width="8"/>
+            <rect x="30" y="105" width="20" height="55" fill="#c8956d" rx="2"/>
+            <rect x="30" y="105" width="20" height="55" fill="url(#mesh)" rx="2" opacity="0.8"/>
+          </svg>
+        </div>
+        <div class="cart-info">
+          <div class="cart-name">Purifier Cool™ PC2 De-NOx</div>
+          <div class="cart-ref">TP12 — Blanc &amp; Or</div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeQty(-1)" aria-label="Diminuer la quantité">−</button>
+            <span class="qty-val" id="qtyVal">1</span>
+            <button class="qty-btn" onclick="changeQty(1)" aria-label="Augmenter la quantité">+</button>
+          </div>
+        </div>
+        <div class="cart-price" id="itemPrice">200 €</div>
+      </div>
+      <div class="cart-summary">
+        <div class="summary-row"><span>Sous-total</span><span id="subtotal">200 €</span></div>
+        <div class="summary-row"><span>Livraison</span><span>Gratuite</span></div>
+        <div class="summary-row total"><span>Total</span><span class="sum-val" id="cartTotal">200 €</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-foot" id="cartFoot" style="display:none">
+    <button class="btn btn-primary" onclick="openCheckout()" style="width:100%;justify-content:center;font-size:15px;padding:18px;">
+      Commander
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <!-- CHECKOUT LAYER -->
+  <div class="checkout-layer" id="checkoutLayer">
+    <div style="display:flex;flex-direction:column;height:100%;">
+      <div class="co-head">
+        <button class="back-btn" onclick="closeCheckout()" aria-label="Retour au panier">←</button>
+        <h3>Commande</h3>
+      </div>
+
+      <!-- Steps indicator -->
+      <div style="padding:20px 28px 0;display:flex;align-items:center;">
+        <div class="step active" id="s1" data-n="1">Livraison</div>
+        <div class="step-line"></div>
+        <div class="step" id="s2" data-n="2">Paiement</div>
+        <div class="step-line"></div>
+        <div class="step" id="s3" data-n="3">Confirmation</div>
+      </div>
+
+      <div class="co-body" id="coBody">
+
+        <!-- PAGE 1: Delivery -->
+        <div class="form-page active" id="page1">
+          <div class="section-title">Informations de livraison</div>
+          <div class="field-row">
+            <div class="field-group"><label>Prénom</label><input type="text" id="fname" placeholder="Jean" required></div>
+            <div class="field-group"><label>Nom</label><input type="text" id="lname" placeholder="Dupont" required></div>
+          </div>
+          <div class="field-group"><label>Adresse e-mail</label><input type="email" id="email" placeholder="jean@exemple.com" required></div>
+          <div class="field-group"><label>Téléphone</label><input type="tel" id="phone" placeholder="+33 6 00 00 00 00"></div>
+          <div class="field-group"><label>Adresse</label><input type="text" id="addr" placeholder="12 rue de la Paix" required></div>
+          <div class="field-row">
+            <div class="field-group"><label>Code postal</label><input type="text" id="zip" placeholder="75001" required></div>
+            <div class="field-group"><label>Ville</label><input type="text" id="city" placeholder="Paris" required></div>
+          </div>
+          <div class="field-group"><label>Pays</label>
+            <select id="country"><option value="FR">France</option><option value="BE">Belgique</option><option value="CH">Suisse</option><option value="LU">Luxembourg</option></select>
+          </div>
+          <div class="co-recap">
+            <div class="recap-row"><span>Purifier Cool™ PC2 De-NOx ×<span id="rQty">1</span></span><span id="rSub">200 €</span></div>
+            <div class="recap-row"><span>Livraison express</span><span>Gratuite</span></div>
+            <div class="recap-row total"><span>Total TTC</span><span id="rTotal">200 €</span></div>
+          </div>
+        </div>
+
+        <!-- PAGE 2: Payment -->
+        <div class="form-page" id="page2">
+          <div class="section-title">Paiement sécurisé</div>
+          <div class="field-group">
+            <label>Titulaire de la carte</label>
+            <input type="text" id="cname" placeholder="Jean Dupont" required>
+          </div>
+          <div class="field-group card-row">
+            <label>Numéro de carte</label>
+            <input type="text" id="cnum" placeholder="1234 5678 9012 3456" maxlength="19" required>
+            <span class="card-icon">VISA</span>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label>Expiration</label><input type="text" id="cexp" placeholder="MM/AA" maxlength="5" required></div>
+            <div class="field-group"><label>CVV</label><input type="password" id="ccvv" placeholder="•••" maxlength="4" required></div>
+          </div>
+          <div class="co-recap">
+            <div class="recap-row"><span>Purifier Cool™ PC2 De-NOx ×<span id="rQty2">1</span></span><span id="rSub2">200 €</span></div>
+            <div class="recap-row"><span>Livraison express</span><span>Gratuite</span></div>
+            <div class="recap-row total"><span>Total TTC</span><span id="rTotal2">200 €</span></div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--fg-mute);text-align:center;padding-top:4px;">
+            🔒 Paiement chiffré SSL 256 bits
+          </div>
+        </div>
+
+        <!-- PAGE 3: Confirmation -->
+        <div class="confirm-page" id="page3">
+          <div class="confirm-icon">✓</div>
+          <h4>Merci,<br><em>Jean !</em></h4>
+          <p>Votre commande a été confirmée. Vous recevrez un e-mail de confirmation sous peu.</p>
+          <div class="confirm-ref" id="confirmRef">Réf. #DYS-000000</div>
+          <p style="color:var(--fg-mute);font-size:13px;">Livraison estimée : <strong style="color:var(--fg);">2–3 jours ouvrés</strong></p>
+          <button class="btn btn-primary" style="margin-top:8px;" onclick="closeAll()">Continuer mes achats</button>
+        </div>
+
+      </div>
+
+      <div class="co-foot" id="coFoot">
+        <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+          Continuer <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="co-foot-note">🔒 Commande 100 % sécurisée</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── FAN 3D ROTATION ── */
+(function(){
+  const stage=document.getElementById('fanStage'),fan=document.getElementById('fan3d');
+  if(!stage||!fan)return;
+  let rot=-8,vel=0.18,drag=false,lx=0,lt=0;
+  function apply(){fan.style.transform=`rotateY(${rot}deg)`;}
+  function tick(){
+    if(!drag){rot+=vel;vel*=0.985;const s=vel>=0?1:-1;if(Math.abs(vel)<0.18)vel=s*0.18;apply();}
+    requestAnimationFrame(tick);
+  }
+  function dn(x){drag=true;lx=x;lt=performance.now();vel=0;stage.style.cursor='grabbing';}
+  function mv(x){if(!drag)return;const dx=x-lx,now=performance.now(),dt=Math.max(1,now-lt);vel=(dx/dt)*16;rot+=dx*0.55;lx=x;lt=now;apply();}
+  function up(){if(!drag)return;drag=false;stage.style.cursor='grab';}
+  stage.addEventListener('mousedown',e=>{e.preventDefault();dn(e.clientX);});
+  window.addEventListener('mousemove',e=>mv(e.clientX));
+  window.addEventListener('mouseup',up);
+  stage.addEventListener('touchstart',e=>dn(e.touches[0].clientX),{passive:true});
+  window.addEventListener('touchmove',e=>{if(drag)mv(e.touches[0].clientX);},{passive:true});
+  window.addEventListener('touchend',up);
+  apply();tick();
+})();
+
+/* ── SCROLL REVEAL ── */
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});},{threshold:.12});
+document.querySelectorAll('.feature,.spec').forEach((el,i)=>{
+  el.style.opacity='0';el.style.transform='translateY(22px)';
+  el.style.transition=`opacity .7s ${i*.08}s ease,transform .7s ${i*.08}s cubic-bezier(.2,.8,.2,1)`;
+  io.observe(el);
+});
+
+/* ── CART STATE ── */
+let qty=0, cartOpen=false, coStep=1;
+const PRICE=200;
+
+function fmt(n){return n.toLocaleString('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0});}
+
+function updateCartUI(){
+  document.getElementById('cartCount').textContent=qty;
+  document.getElementById('qtyVal').textContent=qty;
+  const sub=fmt(qty*PRICE);
+  document.getElementById('itemPrice').textContent=sub;
+  document.getElementById('subtotal').textContent=sub;
+  document.getElementById('cartTotal').textContent=sub;
+  document.getElementById('rQty').textContent=qty;
+  document.getElementById('rSub').textContent=sub;
+  document.getElementById('rTotal').textContent=sub;
+  document.getElementById('rQty2').textContent=qty;
+  document.getElementById('rSub2').textContent=sub;
+  document.getElementById('rTotal2').textContent=sub;
+  const empty=qty===0;
+  document.getElementById('emptyCart').style.display=empty?'block':'none';
+  document.getElementById('cartContent').style.display=empty?'none':'block';
+  document.getElementById('cartFoot').style.display=empty?'none':'block';
+}
+
+function addToCart(){
+  if(qty===0)qty=1;else qty++;
+  updateCartUI();
+  openCart();
+  // button feedback
+  document.querySelectorAll('.btn-primary').forEach(b=>{
+    const orig=b.innerHTML;
+    if(b.textContent.includes('Ajouter')){b.innerHTML='✓ Ajouté';b.style.background='var(--gold)';
+    setTimeout(()=>{b.innerHTML=orig;b.style.background='';},1200);}
+  });
+}
+
+function changeQty(d){
+  qty=Math.max(0,qty+d);
+  if(qty===0)closeCart();
+  updateCartUI();
+}
+
+function openCart(){
+  document.getElementById('cartPanel').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  cartOpen=true;
+}
+function closeCart(){
+  document.getElementById('cartPanel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow='';
+  cartOpen=false;
+  closeCheckout();
+}
+
+/* ── CHECKOUT ── */
+function openCheckout(){
+  document.getElementById('checkoutLayer').classList.add('open');
+  setStep(1);
+}
+function closeCheckout(){
+  document.getElementById('checkoutLayer').classList.remove('open');
+  coStep=1;
+}
+function closeAll(){closeCart();coStep=1;setStep(1);}
+
+function setStep(n){
+  coStep=n;
+  [1,2,3].forEach(i=>{
+    const s=document.getElementById('s'+i);
+    s.classList.remove('active','done');
+    if(i<n)s.classList.add('done');
+    else if(i===n)s.classList.add('active');
+  });
+  [1,2].forEach(i=>{
+    const p=document.getElementById('page'+i);
+    if(p)p.classList.toggle('active',i===n);
+  });
+  const p3=document.getElementById('page3');
+  p3.classList.toggle('active',n===3);
+  document.getElementById('coFoot').style.display=n===3?'none':'block';
+  const nb=document.getElementById('nextBtn');
+  nb.innerHTML=n===1?'Continuer au paiement <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>':
+    'Confirmer la commande <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+}
+
+function validate(ids){return ids.every(id=>{const el=document.getElementById(id);return el&&el.value.trim()!=='';});}
+
+function nextStep(){
+  if(coStep===1){
+    if(!validate(['fname','lname','email','addr','zip','city'])){
+      shake(document.getElementById('nextBtn'));return;
+    }
+    setStep(2);
+  } else if(coStep===2){
+    if(!validate(['cname','cnum','cexp','ccvv'])){
+      shake(document.getElementById('nextBtn'));return;
+    }
+    // Show confirmation
+    const fname=document.getElementById('fname').value;
+    document.querySelector('#page3 h4 em').textContent=fname+' !';
+    document.getElementById('confirmRef').textContent='Réf. #DYS-'+Math.floor(100000+Math.random()*900000);
+    setStep(3);
+    qty=0;updateCartUI();
+  }
+}
+
+function shake(el){
+  el.style.transform='translateX(-6px)';
+  setTimeout(()=>{el.style.transform='translateX(6px)';},80);
+  setTimeout(()=>{el.style.transform='translateX(-4px)';},160);
+  setTimeout(()=>{el.style.transform='';},240);
+}
+
+/* Format card number */
+document.getElementById('cnum').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'').substring(0,16);
+  this.value=v.replace(/(.{4})/g,'$1 ').trim();
+  const brand=v[0]==='4'?'VISA':v[0]==='5'?'MC':v.startsWith('34')||v.startsWith('37')?'AMEX':'CARD';
+  document.querySelector('.card-icon').textContent=brand;
+});
+document.getElementById('cexp').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'');
+  if(v.length>=3)v=v.substring(0,2)+'/'+v.substring(2,4);
+  this.value=v;
+});
+
+/* Keyboard close */
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart();});
+
+updateCartUI();
+</script>
+</body>
+</html>
